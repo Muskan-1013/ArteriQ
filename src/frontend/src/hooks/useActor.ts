@@ -1,4 +1,3 @@
-import { createActorWithConfig } from "@caffeineai/core-infrastructure";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 
@@ -7,21 +6,15 @@ import { createActor } from "@/backend";
 const ACTOR_QUERY_KEY = "actor";
 
 /**
- * Local replacement for `@caffeineai/core-infrastructure`'s `useActor`.
- *
- * The platform `useActor` internally calls `useInternetIdentity()`, which
- * throws "InternetIdentityProvider is not present" unless the tree is wrapped
- * in `InternetIdentityProvider`. ArteriQ uses a custom email + password auth
- * system (no Internet Identity), so it never mounts that provider. This hook
- * builds the same unauthenticated actor via `createActorWithConfig` — the
- * exact code path the platform hook uses when no II identity is present — but
- * without depending on the InternetIdentityProvider context.
+ * Builds the fetch-based Backend client (see src/backend.ts) and exposes it
+ * with the same { actor, isFetching } shape the rest of the app expects.
+ * No ICP agent, no Internet Identity -- just a plain HTTP client.
  */
 export function useActor() {
   const queryClient = useQueryClient();
   const actorQuery = useQuery({
     queryKey: [ACTOR_QUERY_KEY],
-    queryFn: async () => createActorWithConfig(createActor),
+    queryFn: async () => createActor(),
     staleTime: Number.POSITIVE_INFINITY,
     enabled: true,
   });

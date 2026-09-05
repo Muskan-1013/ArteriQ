@@ -1,0 +1,75 @@
+// Version: 1.0.0
+type Data__265875254<K, V> = {var count : Nat__58649523; kvs : [var ?(K, V)]};
+type Email__823327044 = Text;
+type Finding__41043981 =
+  {parameter : Text; referenceRange : Text; status : Text; value : Text};
+type Internal__161573640<K, V> =
+  {children : [var ?Node__430031793<K, V>]; data : Data__265875254<K, V>};
+type Leaf__1045638083<K, V> = {data : Data__265875254<K, V>};
+type List__1004628775<T> =
+  {
+    var blockIndex : Nat__58649523;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__58649523
+  };
+type List__89170296<T> = List__1004628775<T>;
+type Nat__58649523 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__430031793<K, V> =
+  {#internal : Internal__161573640<K, V>; #leaf : Leaf__1045638083<K, V>};
+type ReportId__810191456 = Nat;
+type RiskLevel__752600902 = {#high; #low; #moderate};
+type RiskReport__71115093 = RiskReport__953654247;
+type RiskReport__953654247 =
+  {
+    clinicalExplanation : Text;
+    disclaimer : Text;
+    findings : [Finding__41043981];
+    riskLevel : RiskLevel__752600902
+  };
+type SavedReport__141472406 =
+  {createdAt : Int; id : ReportId__810191456; report : RiskReport__71115093};
+type SessionToken__19510978 = Text;
+type Session__766072355 =
+  {
+    createdAt : Int;
+    expiresAt : Int;
+    token : SessionToken__19510978;
+    userId : UserId__242737940
+  };
+type UserId__242737940 = Principal;
+type UserId__973077950 = UserId__242737940;
+type User__129910419 =
+  {
+    createdAt : Int;
+    email : Email__823327044;
+    id : UserId__242737940;
+    name : Text;
+    passwordHash : Blob;
+    salt : Blob
+  };
+actor {
+  stable nextReportId : {var next : Nat};
+  stable reportsByUser :
+    {
+      var root :
+        Node__430031793<UserId__973077950,
+                         List__89170296<SavedReport__141472406>>;
+      var size : Nat__58649523
+    };
+  stable sessions :
+    {
+      var root : Node__430031793<SessionToken__19510978, Session__766072355>;
+      var size : Nat__58649523
+    };
+  stable usersByEmail :
+    {
+      var root : Node__430031793<Email__823327044, User__129910419>;
+      var size : Nat__58649523
+    };
+  stable usersById :
+    {
+      var root : Node__430031793<UserId__242737940, User__129910419>;
+      var size : Nat__58649523
+    }
+};

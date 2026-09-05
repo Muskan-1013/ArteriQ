@@ -1,0 +1,90 @@
+type UserId = principal;
+type User = 
+ record {
+   createdAt: int;
+   email: Email;
+   id: UserId;
+   name: text;
+   passwordHash: blob;
+   salt: blob;
+ };
+type SessionToken = text;
+type SavedReport = 
+ record {
+   createdAt: int;
+   id: ReportId;
+   report: RiskReport;
+ };
+type RiskReport = 
+ record {
+   clinicalExplanation: text;
+   disclaimer: text;
+   findings: vec Finding;
+   riskLevel: RiskLevel;
+ };
+type RiskLevel = 
+ variant {
+   high;
+   low;
+   moderate;
+ };
+type RiskAssessmentInput = 
+ record {
+   complexes: text;
+   heartRate: nat;
+   prInterval: nat;
+   qrsDuration: nat;
+   qtInterval: nat;
+   rrInterval: nat;
+   spo2: nat;
+   stSegment: float64;
+   temperature: float64;
+   ultrasoundImage: opt blob;
+ };
+type Result_3 = 
+ variant {
+   err: AuthError;
+   ok: vec SavedReport;
+ };
+type Result_2 = 
+ variant {
+   err: AuthError;
+   ok: SessionToken;
+ };
+type Result_1 = 
+ variant {
+   err: AuthError;
+   ok: SavedReport;
+ };
+type Result = 
+ variant {
+   err: AuthError;
+   ok: User;
+ };
+type ReportId = nat;
+type Finding = 
+ record {
+   parameter: text;
+   referenceRange: text;
+   status: text;
+   value: text;
+ };
+type Email = text;
+type AuthError = 
+ variant {
+   emailTaken;
+   invalidCredentials;
+   invalidEmail;
+   notAuthenticated;
+   weakPassword;
+ };
+service : {
+  assessRisk: (input: RiskAssessmentInput) -> (RiskReport);
+  getApiDoc: () -> (text) query;
+  getCurrentUser: (token: SessionToken) -> (opt User) query;
+  getMyReports: (token: SessionToken) -> (Result_3) query;
+  login: (email: Email, password: text) -> (Result_2);
+  logout: (token: SessionToken) -> ();
+  saveReport: (token: SessionToken, report: RiskReport) -> (Result_1);
+  signup: (name: text, email: Email, password: text) -> (Result);
+}

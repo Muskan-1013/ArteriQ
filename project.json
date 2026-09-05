@@ -1,0 +1,18 @@
+{
+  "overview": "ArteriQ is a premium medical-tech platform for a portable, non-invasive cardiovascular monitoring system that acquires ECG, heart rate, SpO2 and temperature, and delivers a preliminary AI-assisted risk report.",
+  "features": [
+    "Email and password sign-up and login",
+    "Two-splash animated intro flow",
+    "Interactive circular pipeline showing how ArteriQ works",
+    "Clinical-style risk assessment report with PDF download",
+    "Full dark-mode support with adaptive logo"
+  ],
+  "category": "medical-tech-website",
+  "tags": [
+    "health",
+    "medical",
+    "biomedical",
+    "risk-assessment"
+  ],
+  "last_updated": "2026-09-05T04:50:42.322Z"
+}

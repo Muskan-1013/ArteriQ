@@ -1,0 +1,18 @@
+[package]
+name = "backend"
+version = "0.1.0"
+
+[build]
+outputDir = "src/backend/dist"
+args = [ "--release" ]
+check-wasm = true
+
+[canisters.backend]
+main = "src/backend/main.mo"
+
+[toolchain]
+moc = "1.6.0"
+
+[dependencies]
+core = "2.6.1"
+sha2 = "0.2.5"

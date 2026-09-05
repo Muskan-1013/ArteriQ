@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   ArteriQ — Premium Medical-Tech Visual System
+   Fonts: Fjalla One (display) + Montserrat (body)
+   Palette: wine #58181F / periwinkle #dedcff / navy #000080
+   ============================================================ */
+
+@font-face {
+  font-family: "Fjalla One";
+  src: url("/assets/fonts/FjallaOne.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("/assets/fonts/Montserrat.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "General Sans";
+  src: url("/assets/fonts/GeneralSans.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-display: "Fjalla One", "General Sans", sans-serif;
+    --font-body: "Montserrat", "Figtree", sans-serif;
+    --font-mono: "Geist Mono", monospace;
+    --radius: 0.75rem;
+
+    /* ArteriQ palette — light */
+    --background: 0.985 0.005 285;
+    --foreground: 0.12 0.02 285;
+    --card: 0.99 0.006 285;
+    --card-foreground: 0.12 0.02 285;
+    --popover: 0.99 0.006 285;
+    --popover-foreground: 0.12 0.02 285;
+
+    --primary: 0.32 0.11 20;
+    --primary-foreground: 0.95 0.02 285;
+
+    --secondary: 0.88 0.06 285;
+    --secondary-foreground: 0.28 0.08 272;
+    --muted: 0.95 0.01 285;
+    --muted-foreground: 0.5 0.02 285;
+
+    --accent: 0.28 0.13 265;
+    --accent-foreground: 0.95 0.02 285;
+
+    --destructive: 0.55 0.22 25;
+    --destructive-foreground: 0.98 0.005 25;
+    --success: 0.58 0.15 150;
+    --warning: 0.72 0.15 85;
+
+    --border: 0.9 0.02 285;
+    --input: 0.9 0.02 285;
+    --ring: 0.32 0.11 20;
+
+    --chart-1: 0.32 0.11 20;
+    --chart-2: 0.28 0.13 265;
+    --chart-3: 0.88 0.06 285;
+    --chart-4: 0.58 0.15 150;
+    --chart-5: 0.72 0.15 85;
+
+    --sidebar: 0.985 0.005 285;
+    --sidebar-foreground: 0.12 0.02 285;
+    --sidebar-primary: 0.32 0.11 20;
+    --sidebar-primary-foreground: 0.95 0.02 285;
+    --sidebar-accent: 0.88 0.06 285;
+    --sidebar-accent-foreground: 0.28 0.08 272;
+    --sidebar-border: 0.9 0.02 285;
+    --sidebar-ring: 0.32 0.11 20;
+
+    /* Glassmorphism surfaces */
+    --glass-bg: 0.99 0.006 285 / 0.62;
+    --glass-border: 0.95 0.02 285 / 0.55;
+    --glass-highlight: 0.99 0.006 285 / 0.7;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.32 0.11 20),
+      oklch(0.28 0.13 265)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.99 0.006 285 / 0.4),
+      oklch(0.985 0.005 285 / 0)
+    );
+
+    /* Motion */
+    --transition-smooth: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dark {
+    --font-display: "Fjalla One", "General Sans", sans-serif;
+    --font-body: "Montserrat", "Figtree", sans-serif;
+    --font-mono: "Geist Mono", monospace;
+
+    --background: 0.16 0.02 285;
+    --foreground: 0.94 0.01 285;
+    --card: 0.2 0.025 285;
+    --card-foreground: 0.94 0.01 285;
+    --popover: 0.2 0.025 285;
+    --popover-foreground: 0.94 0.01 285;
+
+    --primary: 0.62 0.12 20;
+    --primary-foreground: 0.16 0.02 285;
+
+    --secondary: 0.24 0.04 285;
+    --secondary-foreground: 0.9 0.03 285;
+    --muted: 0.24 0.03 285;
+    --muted-foreground: 0.6 0.02 285;
+
+    --accent: 0.55 0.16 265;
+    --accent-foreground: 0.95 0.01 285;
+
+    --destructive: 0.62 0.2 25;
+    --destructive-foreground: 0.95 0.01 25;
+    --success: 0.65 0.16 150;
+    --warning: 0.75 0.15 85;
+
+    --border: 0.28 0.03 285;
+    --input: 0.28 0.03 285;
+    --ring: 0.62 0.12 20;
+
+    --chart-1: 0.62 0.12 20;
+    --chart-2: 0.55 0.16 265;
+    --chart-3: 0.24 0.04 285;
+    --chart-4: 0.65 0.16 150;
+    --chart-5: 0.75 0.15 85;
+
+    --sidebar: 0.16 0.02 285;
+    --sidebar-foreground: 0.94 0.01 285;
+    --sidebar-primary: 0.62 0.12 20;
+    --sidebar-primary-foreground: 0.16 0.02 285;
+    --sidebar-accent: 0.24 0.04 285;
+    --sidebar-accent-foreground: 0.9 0.03 285;
+    --sidebar-border: 0.28 0.03 285;
+    --sidebar-ring: 0.62 0.12 20;
+
+    --glass-bg: 0.2 0.025 285 / 0.55;
+    --glass-border: 0.3 0.03 285 / 0.5;
+    --glass-highlight: 0.24 0.03 285 / 0.6;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.62 0.12 20),
+      oklch(0.55 0.16 265)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.2 0.025 285 / 0.5),
+      oklch(0.16 0.02 285 / 0)
+    );
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  /* Glassmorphism surface */
+  .glass {
+    background: oklch(var(--glass-bg));
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid oklch(var(--glass-border));
+    box-shadow: inset 0 1px 0 0 oklch(var(--glass-highlight)), 0 12px 40px -12px
+      oklch(0.12 0.02 285 / 0.18);
+  }
+
+  .glass-strong {
+    background: oklch(var(--glass-highlight));
+    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    backdrop-filter: blur(28px) saturate(1.5);
+    border: 1px solid oklch(var(--glass-border));
+    box-shadow: inset 0 1px 0 0 oklch(var(--glass-highlight)), 0 20px 60px -20px
+      oklch(0.12 0.02 285 / 0.3);
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Adaptive logo colour: wine on light, white on dark, highest-contrast on mid-tone */
+  .arteriq-logo {
+    color: oklch(0.32 0.11 20);
+  }
+
+  .dark .arteriq-logo {
+    color: oklch(0.98 0.01 285);
+  }
+}

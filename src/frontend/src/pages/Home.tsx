@@ -113,7 +113,9 @@ export function Home() {
               ArteriQ is a portable, non-invasive cardiovascular risk-screening
               system that helps you understand your heart health early — so you
               can have informed, hopeful conversations with your clinician.
-            </p>
+      	   </p>
+          </motion.div>
+         </div>    
       </section>
 
       {/* 2. What is ArteriQ */}

@@ -114,27 +114,6 @@ export function Home() {
               system that helps you understand your heart health early — so you
               can have informed, hopeful conversations with your clinician.
             </p>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-              <Button
-                data-ocid="hero_cta"
-                size="lg"
-                className="rounded-full px-8"
-                onClick={() => scrollToSection("about")}
-              >
-                Learn more
-              </Button>
-              <Button
-                data-ocid="hero_secondary"
-                variant="outline"
-                size="lg"
-                className="rounded-full px-8"
-                onClick={() => scrollToSection("contact")}
-              >
-                Contact us
-              </Button>
-            </div>
-          </motion.div>
-        </div>
       </section>
 
       {/* 2. What is ArteriQ */}

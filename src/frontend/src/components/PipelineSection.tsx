@@ -1,6 +1,5 @@
 import {
   Activity,
-  ArrowRight,
   Brain,
   ClipboardCheck,
   FileText,
@@ -281,32 +280,6 @@ export function PipelineSection() {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Mobile-friendly step list fallback */}
-        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {STEPS.map((step, i) => (
-            <button
-              key={step.id}
-              type="button"
-              data-ocid={`pipeline_list_step_${i + 1}`}
-              onClick={() => setActiveId(step.id)}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors",
-                step.id === activeId
-                  ? "border-primary/40 bg-primary/5"
-                  : "border-border bg-card/50 hover:bg-card",
-              )}
-            >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <step.icon className="size-4" />
-              </span>
-              <span className="font-display text-sm tracking-wide text-foreground">
-                {step.label}
-              </span>
-              <ArrowRight className="ml-auto size-4 text-muted-foreground" />
-            </button>
-          ))}
         </div>
       </div>
     </section>

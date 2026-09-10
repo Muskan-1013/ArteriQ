@@ -87,6 +87,49 @@ function inlineComputedStyles(element: HTMLElement): HTMLElement {
 }
 
 /**
+ * Temporarily forces the report's viewport-width-dependent (`sm:`) styles
+ * into their "desktop" state directly on the live element, so the capture
+ * below always reflects the two-column layout regardless of how wide the
+ * person's actual browser window is. Returns a function that restores the
+ * original inline styles.
+ */
+function forceDesktopLayout(element: HTMLElement): () => void {
+  const restores: Array<() => void> = [];
+
+  const setProp = (
+    el: HTMLElement,
+    prop: string,
+    value: string,
+  ) => {
+    const prev = el.style.getPropertyValue(prop);
+    const prevPriority = el.style.getPropertyPriority(prop);
+    el.style.setProperty(prop, value, "important");
+    restores.push(() => {
+      if (prev) {
+        el.style.setProperty(prop, prev, prevPriority);
+      } else {
+        el.style.removeProperty(prop);
+      }
+    });
+  };
+
+  // The assessment-details grid: `grid-cols-1 sm:grid-cols-2`.
+  element
+    .querySelectorAll<HTMLElement>('[class*="sm:grid-cols-2"]')
+    .forEach((el) => setProp(el, "grid-template-columns", "repeat(2, minmax(0, 1fr))"));
+
+  // Each detail row hides its own separator border/padding at `sm:` and up.
+  element.querySelectorAll<HTMLElement>('[class*="sm:border-0"]').forEach((el) => {
+    setProp(el, "border-bottom-width", "0px");
+  });
+  element.querySelectorAll<HTMLElement>('[class*="sm:pb-0"]').forEach((el) => {
+    setProp(el, "padding-bottom", "0px");
+  });
+
+  return () => restores.forEach((fn) => fn());
+}
+
+/**
  * Captures a DOM node (the rendered Risk Report) as a high-quality PDF that
  * preserves the report's layout, colours, typography and branding.
  *
@@ -102,11 +145,26 @@ export async function downloadReportAsPdf(
   // Render a fully inlined clone so html2canvas never has to parse the app's
   // own stylesheet. The clone must be attached to the document (off-screen)
   // for it to compute layout correctly; it is removed right after capture.
-  const clone = inlineComputedStyles(element);
+  // The report's two-column detail grid only appears above Tailwind's `sm`
+  // breakpoint, which is a real media query keyed off the browser window's
+  // width — not the size of any container we could size in JS. So the PDF
+  // would silently fall back to a single-column mobile layout whenever the
+  // person downloads it from a narrow window. To keep the PDF layout
+  // consistent regardless of window size, we temporarily force the relevant
+  // elements into their desktop (`sm:`) layout on the live element itself
+  // before reading computed styles, then restore them immediately after.
+  const restoreDesktopLayout = forceDesktopLayout(element);
+  let clone: HTMLElement;
+  try {
+    clone = inlineComputedStyles(element);
+  } finally {
+    restoreDesktopLayout();
+  }
+
   clone.style.position = "fixed";
   clone.style.top = "0";
   clone.style.left = "-99999px";
-  clone.style.width = `${element.offsetWidth}px`;
+  clone.style.width = `${Math.max(element.offsetWidth, 820)}px`;
   clone.style.zIndex = "-1";
   document.body.appendChild(clone);
 

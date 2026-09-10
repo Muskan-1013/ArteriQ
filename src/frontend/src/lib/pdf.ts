@@ -105,12 +105,27 @@ export async function downloadReportAsPdf(
   filename = "arteriq-risk-report.pdf",
 ): Promise<void> {
   // Render a colour-resolved clone so html2canvas can parse every colour.
-    const canvas = await html2canvas(element, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#fbfbfe",
-    logging: false,
-  });
+  // The clone must be attached to the document (off-screen) for html2canvas
+  // to compute its layout correctly; it is removed again right after capture.
+  const clone = resolveColorsForCapture(element);
+  clone.style.position = "fixed";
+  clone.style.top = "0";
+  clone.style.left = "-99999px";
+  clone.style.width = `${element.offsetWidth}px`;
+  clone.style.zIndex = "-1";
+  document.body.appendChild(clone);
+
+  let canvas: HTMLCanvasElement;
+  try {
+    canvas = await html2canvas(clone, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#fbfbfe",
+      logging: false,
+    });
+  } finally {
+    document.body.removeChild(clone);
+  }
 
   const pdf = new jsPDF({
     orientation: "portrait",

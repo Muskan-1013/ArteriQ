@@ -52,6 +52,18 @@ function normalizeColorFunctions(value: string): string {
   return value.replace(COLOR_FUNCTION_RE, (match) => normalizeColor(match));
 }
 
+// html2canvas measures and draws text glyph-by-glyph itself rather than
+// letting the browser do it, and it does this poorly for the custom
+// variable/display webfonts this app uses (Montserrat, General Sans, Fjalla
+// One, Figtree) — their kerning tables throw its per-character width
+// estimate off, which is what causes letters and words to visually collide
+// in the captured image. Custom fonts aren't essential to a PDF export, so
+// we substitute a plain system font stack everywhere in the clone; this
+// keeps sizes/weights/layout identical but gives html2canvas glyph metrics
+// it can measure accurately.
+const SAFE_FONT_STACK =
+  '-apple-system, "Segoe UI", Arial, Helvetica, sans-serif';
+
 function inlineComputedStyles(element: HTMLElement): HTMLElement {
   const clone = element.cloneNode(true) as HTMLElement;
 
@@ -66,6 +78,7 @@ function inlineComputedStyles(element: HTMLElement): HTMLElement {
       const prop = computed.item(p);
       let value = computed.getPropertyValue(prop);
       if (!value) continue;
+      if (prop === "font-family") value = SAFE_FONT_STACK;
       value = normalizeColorFunctions(value);
       declarations.push(`${prop}:${value}`);
     }
